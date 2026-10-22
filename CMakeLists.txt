@@ -14,10 +14,4 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 add_subdirectory("external/checo")
 
 # Add libraries listed in this repository
-add_subdirectory("lib/checo_rpg")
-add_subdirectory("lib/checo_rpg_io")
-
-# Add libraries to support testing
-if (${CHECO_ENABLE_TESTS})
-    add_subdirectory("lib/checo_rpg_test_support")
-endif()
+add_subdirectory("lib/checo_game_engine")
