@@ -35,7 +35,7 @@ struct TagComponent::Impl
     std::unordered_set<uint64_t> m_TagHashes{};
 };
 
-TagComponent::TagComponent() noexcept
+TagComponent::TagComponent()
     : m_Impl(std::make_unique<Impl>())
 {
 }

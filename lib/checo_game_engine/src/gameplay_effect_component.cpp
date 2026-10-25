@@ -34,10 +34,10 @@ namespace checo::game
 struct GameplayEffectComponent::Impl
 {
     Actor *m_Actor{nullptr};
-    std::vector<std::unique_ptr<GameplayEffect>> m_Effects;
+    std::vector<std::shared_ptr<GameplayEffect>> m_Effects;
 };
 
-GameplayEffectComponent::GameplayEffectComponent(Actor *actor) noexcept
+GameplayEffectComponent::GameplayEffectComponent(Actor *actor)
     : m_Impl(std::make_unique<Impl>())
 {
     m_Impl->m_Actor = actor;
@@ -52,7 +52,7 @@ void GameplayEffectComponent::forEachEffect(void (*callback)(const GameplayEffec
     }
 }
 
-void GameplayEffectComponent::addEffect(std::unique_ptr<GameplayEffect> effect)
+void GameplayEffectComponent::addEffect(std::shared_ptr<GameplayEffect> effect)
 {
     m_Impl->m_Effects.push_back(std::move(effect));
     m_Impl->m_Effects.back()->apply(m_Impl->m_Actor);
@@ -60,7 +60,7 @@ void GameplayEffectComponent::addEffect(std::unique_ptr<GameplayEffect> effect)
 
 void GameplayEffectComponent::removeEffect(const UniqueId instanceId)
 {
-    std::erase_if(m_Impl->m_Effects, [&](const std::unique_ptr<GameplayEffect> &effect) {
+    std::erase_if(m_Impl->m_Effects, [&](const auto &effect) {
         if (effect->getInstanceId() == instanceId) {
             effect->remove(m_Impl->m_Actor);
             return true;
@@ -72,7 +72,7 @@ void GameplayEffectComponent::removeEffect(const UniqueId instanceId)
 void GameplayEffectComponent::removeEffectsByDefinitionId(const UniqueId definitionId)
 {
 
-    std::erase_if(m_Impl->m_Effects, [&](const std::unique_ptr<GameplayEffect> &effect) {
+    std::erase_if(m_Impl->m_Effects, [&](const auto &effect) {
         if (effect->getDefinitionId() == definitionId) {
             effect->remove(m_Impl->m_Actor);
             return true;
@@ -83,7 +83,7 @@ void GameplayEffectComponent::removeEffectsByDefinitionId(const UniqueId definit
 
 void GameplayEffectComponent::removeEffectsBySourceId(const UniqueId sourceId)
 {
-    std::erase_if(m_Impl->m_Effects, [&](const std::unique_ptr<GameplayEffect> &effect) {
+    std::erase_if(m_Impl->m_Effects, [&](const auto &effect) {
         if (effect->getSourceId() == sourceId) {
             effect->remove(m_Impl->m_Actor);
             return true;

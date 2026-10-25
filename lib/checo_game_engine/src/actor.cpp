@@ -24,14 +24,44 @@
 
 #include "checo/game/actor.h"
 
+#include <unordered_map>
+
 namespace checo::game
 {
 
-Actor::Actor(const uint64_t id) noexcept
-    : m_Id{id}
+using ActorComponentPtr = std::unique_ptr<ActorComponent, void (*)(ActorComponent *)>;
+
+struct Actor::Impl
+{
+    std::unordered_map<uint64_t, ActorComponentPtr> m_Components{};
+};
+
+Actor::Actor(const UniqueId id)
+    : m_Id{id},
+      m_Impl{std::make_unique<Impl>()}
 {
 }
 
 Actor::~Actor() = default;
+
+ActorComponent *Actor::internalGetComponent(const uint64_t typeId)
+{
+    auto it = m_Impl->m_Components.find(typeId);
+    if (it != m_Impl->m_Components.end()) {
+        return it->second.get();
+    }
+    return nullptr;
+}
+
+bool Actor::internalAddComponent(const uint64_t typeId, ActorComponent *component, void (*deleter)(ActorComponent *))
+{
+    auto result = m_Impl->m_Components.emplace(typeId, ActorComponentPtr(component, deleter));
+    return result.second;
+}
+
+void Actor::internalRemoveComponent(const uint64_t typeId)
+{
+    m_Impl->m_Components.erase(typeId);
+}
 
 } // namespace checo::game

@@ -43,7 +43,7 @@ struct StatComponent::Impl
     std::unordered_map<UniqueId, Stat> m_Stats{};
 };
 
-StatComponent::StatComponent() noexcept
+StatComponent::StatComponent()
     : m_Impl(std::make_unique<Impl>())
 {
 }

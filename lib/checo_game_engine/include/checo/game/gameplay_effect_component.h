@@ -32,8 +32,6 @@
 
 #include <cstdint>
 #include <memory>
-#include <string_view>
-#include <vector>
 
 namespace checo::game
 {
@@ -44,13 +42,13 @@ class CHECO_GAME_ENGINE_EXPORT GameplayEffectComponent : public ActorComponent
     static uint64_t getUniqueTypeId() { return 1792537580; }
 
   public:
-    explicit GameplayEffectComponent(Actor *actor) noexcept;
+    explicit GameplayEffectComponent(Actor *actor);
     virtual ~GameplayEffectComponent();
 
   public:
     void forEachEffect(void (*callback)(const GameplayEffect *effect));
 
-    void addEffect(std::unique_ptr<GameplayEffect> effect);
+    void addEffect(std::shared_ptr<GameplayEffect> effect);
 
     void removeEffect(const UniqueId instanceId);
     void removeEffectsByDefinitionId(const UniqueId definitionId);

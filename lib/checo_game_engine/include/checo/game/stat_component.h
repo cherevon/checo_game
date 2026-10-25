@@ -54,7 +54,7 @@ class CHECO_GAME_ENGINE_EXPORT StatComponent : public ActorComponent
     static uint64_t getUniqueTypeId() { return 1792354019; }
 
   public:
-    StatComponent() noexcept;
+    StatComponent();
     virtual ~StatComponent();
 
   public:

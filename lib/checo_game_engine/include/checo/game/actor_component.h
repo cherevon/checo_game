@@ -35,7 +35,7 @@ namespace checo::game
 class CHECO_GAME_ENGINE_EXPORT ActorComponent
 {
   public:
-    virtual ~ActorComponent() = default;
+    virtual ~ActorComponent();
 
     ActorComponent(const ActorComponent &) = delete;
     ActorComponent &operator=(const ActorComponent &) = delete;
@@ -43,7 +43,7 @@ class CHECO_GAME_ENGINE_EXPORT ActorComponent
     ActorComponent &operator=(ActorComponent &&) = delete;
 
   protected:
-    ActorComponent() = default;
+    ActorComponent();
 };
 
 template <typename T>

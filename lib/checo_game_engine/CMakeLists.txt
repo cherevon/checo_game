@@ -6,8 +6,9 @@ project("checo_game_engine" LANGUAGES CXX)
 include(GenerateExportHeader)
 
 # Project target
-add_library(${PROJECT_NAME} STATIC
+add_library(${PROJECT_NAME}
 	"src/actor.cpp"
+    "src/actor_component.cpp"
     "src/export_symbols.cpp"
     "src/gameplay_effect.cpp"
     "src/gameplay_effect_component.cpp"

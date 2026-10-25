@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27)
 
-project("checo_rpg_repo" LANGUAGES CXX)
+project("checo_game_repo" LANGUAGES CXX)
 
 # Options
 option(BUILD_SHARED_LIBS "Build using shared libraries" OFF)

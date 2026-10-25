@@ -40,7 +40,7 @@ class CHECO_GAME_ENGINE_EXPORT TagComponent : public ActorComponent
     static uint64_t getUniqueTypeId() { return 1792352111; }
 
   public:
-    TagComponent() noexcept;
+    TagComponent();
     virtual ~TagComponent();
 
   public:

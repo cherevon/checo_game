@@ -30,7 +30,6 @@
 
 #include <cstdint>
 #include <memory>
-#include <unordered_map>
 
 namespace checo::game
 {
@@ -38,7 +37,7 @@ namespace checo::game
 class CHECO_GAME_ENGINE_EXPORT Actor
 {
   public:
-    explicit Actor(const UniqueId id) noexcept;
+    explicit Actor(const UniqueId id);
     virtual ~Actor();
 
   public:
@@ -49,24 +48,23 @@ class CHECO_GAME_ENGINE_EXPORT Actor
     template <ActorComponentType T>
     T *getComponent()
     {
-        uint64_t typeId = T::getUniqueTypeId();
-        if (m_Components.find(typeId) == m_Components.end()) {
-            return nullptr;
-        }
-
-        return static_cast<T *>(m_Components[typeId].get());
+        return static_cast<T *>(internalGetComponent(T::getUniqueTypeId()));
     }
 
     template <ActorComponentType T, typename... Args>
-    void addComponent(Args &&...args)
+    bool addComponent(Args &&...args)
     {
-        m_Components[T::getUniqueTypeId()] = std::make_unique<T>(std::forward<Args>(args)...);
+        // Pass custom deleter to make sure the component is created and deleted correctly across DLL boundaries (in the
+        // same heap)
+        ActorComponent *component = new T(std::forward<Args>(args)...);
+        auto deleter = [](ActorComponent *ptr) { delete ptr; };
+        return internalAddComponent(T::getUniqueTypeId(), component, deleter);
     }
 
     template <ActorComponentType T>
     void removeComponent()
     {
-        m_Components.erase(T::getUniqueTypeId());
+        internalRemoveComponent(T::getUniqueTypeId());
     }
 
   public:
@@ -75,8 +73,15 @@ class CHECO_GAME_ENGINE_EXPORT Actor
     inline void setId(const UniqueId id) noexcept { m_Id = id; }
 
   private:
-    std::unordered_map<uint64_t, std::unique_ptr<ActorComponent>> m_Components{};
+    ActorComponent *internalGetComponent(const uint64_t typeId);
+    bool internalAddComponent(const uint64_t typeId, ActorComponent *component, void (*deleter)(ActorComponent *));
+    void internalRemoveComponent(const uint64_t typeId);
+
+  private:
     UniqueId m_Id{};
+
+    struct Impl;
+    std::unique_ptr<Impl> m_Impl;
 };
 
 } // namespace checo::game
