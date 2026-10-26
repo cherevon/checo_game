@@ -68,9 +68,8 @@ class CHECO_GAME_ENGINE_EXPORT Actor
     }
 
   public:
-    inline UniqueId getId() const noexcept { return m_Id; }
-
-    inline void setId(const UniqueId id) noexcept { m_Id = id; }
+    UniqueId getId() const noexcept;
+    void setId(const UniqueId id) noexcept;
 
   private:
     ActorComponent *internalGetComponent(const uint64_t typeId);
@@ -83,5 +82,15 @@ class CHECO_GAME_ENGINE_EXPORT Actor
     struct Impl;
     std::unique_ptr<Impl> m_Impl;
 };
+
+inline UniqueId Actor::getId() const noexcept
+{
+    return m_Id;
+}
+
+inline void Actor::setId(const UniqueId id) noexcept
+{
+    m_Id = id;
+}
 
 } // namespace checo::game

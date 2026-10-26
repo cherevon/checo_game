@@ -25,6 +25,7 @@
 #include "checo/game/stat_component.h"
 
 #include <unordered_map>
+#include <vector>
 
 namespace checo::game
 {
@@ -120,7 +121,7 @@ void StatComponent::setBaseStatValue(const UniqueId statId, const float newBase)
     statIter->second.m_IsDirty = true;
 }
 
-std::vector<StatModifier> StatComponent::getModifiers(const UniqueId statId) const
+std::span<const StatModifier> StatComponent::getModifiers(const UniqueId statId) const
 {
     const auto statIter = m_Impl->m_Stats.find(statId);
     if (statIter == m_Impl->m_Stats.end()) {

@@ -25,9 +25,8 @@
 #pragma once
 
 #include "checo/game/unique_id.h"
+#include "checo/string.h"
 #include "checo_game_engine_export.h"
-
-#include <string>
 
 namespace checo::game
 {
@@ -35,9 +34,9 @@ namespace checo::game
 struct CHECO_GAME_ENGINE_EXPORT GameplayEffectDefinition
 {
     UniqueId m_Id{};
-    std::string m_Name{};
-    std::string m_DisplayName{};
-    std::string m_Description{};
+    checo::String m_Name{};
+    checo::String m_DisplayName{};
+    checo::String m_Description{};
 };
 
 } // namespace checo::game

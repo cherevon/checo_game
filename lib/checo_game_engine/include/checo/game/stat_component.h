@@ -30,7 +30,7 @@
 #include "checo_game_engine_export.h"
 
 #include <memory>
-#include <vector>
+#include <span>
 
 namespace checo::game
 {
@@ -65,7 +65,7 @@ class CHECO_GAME_ENGINE_EXPORT StatComponent : public ActorComponent
     float getBaseStatValue(const UniqueId statId) const;
     void setBaseStatValue(const UniqueId statId, const float newBase);
 
-    std::vector<StatModifier> getModifiers(const UniqueId statId) const;
+    std::span<const StatModifier> getModifiers(const UniqueId statId) const;
     void addModifier(const UniqueId statId, const StatModifier &modifier);
     void removeModifiersBySourceId(const UniqueId sourceId);
 
